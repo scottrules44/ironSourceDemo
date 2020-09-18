@@ -28,7 +28,7 @@ iphone =
     {
         plist =
         {
-
+             SKAdNetworkItems = {{SKAdNetworkIdentifier = "SU67R6K2V3.skadnetwork"}},
             NSAppTransportSecurity =
                 {
                     NSAllowsArbitraryLoads = true,
