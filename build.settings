@@ -34,6 +34,7 @@ iphone =
                     NSAllowsArbitraryLoads = true,
                 },
             GADApplicationIdentifier = "replace this",
+            NSUserTrackingUsageDescription= "insert reason for tracking here",
         },
     },
 plugins =
