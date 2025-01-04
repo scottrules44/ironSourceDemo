@@ -1,7 +1,7 @@
 local composer = require( "composer" )
- 
+
 local scene = composer.newScene()
- 
+
 function scene:create( event )
     local sceneGroup = self.view
     local centerX = display.contentCenterX
@@ -19,7 +19,7 @@ function scene:create( event )
     -- The final "true" parameter overrides Corona's auto-scaling of large images
     local background = display.newImage( sceneGroup,"grille_bkg.png", centerX, centerY, true )
 
-    local ground = display.newImage( sceneGroup,"ground.png", centerX, 450, true )
+    local ground = display.newImage( sceneGroup,"beam_long.png", centerX, 450, true )
     physics.addBody( ground, "static", { friction=0.5 } )
 
     local beam1 = display.newImage( sceneGroup,"beam.png" )
@@ -43,7 +43,7 @@ function scene:create( event )
             link[j].x = 121 + (i*34)
             link[j].y = 55 + (j*17)
             physics.addBody( link[j], { density=2.0, friction=0, bounce=0 } )
-            
+
             -- Create joints between links
             if (j > 1) then
                 prevLink = link[j-1] -- each link is joined with the one above it
@@ -64,23 +64,23 @@ function scene:create( event )
     -- Call the above function 12 times
     timer.performWithDelay( 1500, randomBall, 12 )
 end
- 
+
 function scene:show( event )
     local sceneGroup = self.view
     local phase = event.phase
 end
- 
+
 function scene:hide( event )
     local sceneGroup = self.view
     local phase = event.phase
 end
- 
- 
+
+
 function scene:destroy( event )
     local sceneGroup = self.view
 end
- 
- 
+
+
 -- -----------------------------------------------------------------------------------
 -- Scene event function listeners
 -- -----------------------------------------------------------------------------------
@@ -89,5 +89,5 @@ scene:addEventListener( "show", scene )
 scene:addEventListener( "hide", scene )
 scene:addEventListener( "destroy", scene )
 -- -----------------------------------------------------------------------------------
- 
+
 return scene

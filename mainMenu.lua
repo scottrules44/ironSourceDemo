@@ -1,6 +1,13 @@
 local ironSource = require "plugin.ironSource"
+
+--
+
 local json= require "json"
 local widget = require("widget")
+
+local someLoopingMusic = audio.loadStream( "sampleMusic.mp3" )
+local someLoopingMusicChannel = audio.play( someLoopingMusic, { channel=1, loops=-1 } )
+
 local scale0X= ((display.actualContentWidth- display.contentWidth)*.5)*-1
 local scale0Y= ((display.actualContentHeight- display.contentHeight)*.5)*-1
 display.setStatusBar( display.HiddenStatusBar )
@@ -9,10 +16,11 @@ print("Ad Id (used for testing)")
 print("------------------- ")
 print(ironSource.getAdId())
 print("-------------------")
-
+ironSource.setFBTrackingEnabled(true)
 ironSource.debugMode()
 --Predeclare
 local showRewardVideo
+local loadRewardVideo
 local showInterstitial
 local loadInterstitial
 local testScene
@@ -37,21 +45,19 @@ function scene:create( event )
         if (event.type == "banner") then
             if (event.phase == "adLoaded") then
                  bannerHeight = ironSource.getSize()
-                 print(bannerHeight)
                  topBanner.height = bannerHeight
                  topBanner.y= 0-scale0Y+(bannerHeight/2)
+                 ironSource.show("banner", {position = "top"})
             elseif (event.phase == "adLoadedFailed" and event.error ~= "No ads to show") then
 
             end
         end
 
         if (event.type == "rewardedVideo") then
-            if (event.phase == "availabilityChanged") then
-                if (event.available == true) then
-                    showRewardVideo:setEnabled( true )
-                    showRewardVideo.alpha = 1
-                    showRewardVideo:setLabel( "Show Reward Video" )
-                end
+            if (event.phase == "adReady") then
+                showRewardVideo:setEnabled( true )
+                showRewardVideo.alpha = 1
+                showRewardVideo:setLabel( "Show Reward Video" )
             end
         end
 
@@ -67,12 +73,11 @@ function scene:create( event )
             end
         end
     end
-    ironSource.init(adLis,{androidAppKey="replace this", iOSAppKey= "replace this"})
+    --Init within 10 seconds to test banners
 
-    timer.performWithDelay( 5000, function ()
-        ironSource.show("banner", {position = "top"})
-        ironSource.load("banner")
-    end, -1)
+    timer.performWithDelay( 10000, function ()
+        ironSource.load("banner", { iOSAdUnitId = "iep3rxsyp9na3rw8", androidAdUnitId = "thnfvcsog13bhn08"})
+    end, 1)
 
 
     local sceneGroup = self.view
@@ -81,16 +86,17 @@ function scene:create( event )
     sceneGroup:insert( bg )
     topBanner = display.newRect( display.contentCenterX, 0-scale0Y+(bannerHeight/2),display.actualContentWidth, bannerHeight)
     topBanner.alpha = .5
-    local title = display.newText( {text = "Iron Source Plugin", fontSize = 30} )
+    local title = display.newText( {text = "Iron Source Plugin", fontSize = 20} )
     title.width, title.height = 300, 168
-    title.x, title.y = display.contentCenterX, 168*.5
+    title.x, title.y = display.contentCenterX, 140*.5
     title:setFillColor(1,1,1)
     sceneGroup:insert( title )
+
 
     showRewardVideo= widget.newButton({
         label = "Loading Reward",
         x = display.contentCenterX,
-        y = display.contentCenterY-100,
+        y = display.contentCenterY-130,
         id = "showReward",
         isEnabled = false,
         labelColor = { default={ 1, 1, 1 }, over={ 0, 0, 0, 0.5 } },
@@ -106,6 +112,20 @@ function scene:create( event )
     sceneGroup:insert( showRewardVideo )
     showRewardVideo.alpha = .5
     showRewardVideo:setEnabled( false )
+
+    loadRewardVideo= widget.newButton({
+        label = "Load Reward Video",
+        x = display.contentCenterX,
+        y = display.contentCenterY-90,
+        id = "showReward",
+        isEnabled = true,
+        labelColor = { default={ 1, 1, 1 }, over={ 0, 0, 0, 0.5 } },
+        onRelease =  function ()
+            ironSource.load("rewardedVideo", {iOSAdUnitId = "qwouvdrkuwivay5q", androidAdUnitId = "76yy3nay3ceui2a3"})
+        end
+
+    })
+    sceneGroup:insert( loadRewardVideo )
 
     showInterstitial= widget.newButton({
         label = "Show Interstitial",
@@ -136,7 +156,7 @@ function scene:create( event )
         id = "loadInterstitial",
         labelColor = { default={ 1, 1, 1 }, over={ 0, 0, 0, 0.5 } },
         onRelease =  function ()
-            ironSource.load("interstitial")
+            ironSource.load("interstitial", { iOSAdUnitId = "wmgt0712uuux8ju4", androidAdUnitId = "aeyqi3vqlv6o8sh9" })
         end
     })
     sceneGroup:insert( loadInterstitial )
@@ -153,6 +173,30 @@ function scene:create( event )
 
     })
     sceneGroup:insert( testScene )
+    init1= widget.newButton({
+        label = "Init with No ATT",
+        x = display.contentCenterX,
+        y = display.contentCenterY+100,
+        id = "init1",
+        labelColor = { default={ 1, 1, 1 }, over={ 0, 0, 0, 0.5 } },
+        onRelease =  function ()
+            ironSource.init(adLis, { androidAppKey="85460dcd", iOSAppKey= "8545d445"})
+        end
+    })
+    sceneGroup:insert( init1 )
+
+    init2 = widget.newButton({
+        label = "Init with ATT",
+        x = display.contentCenterX,
+        y = display.contentCenterY+150,
+        id = "init2",
+        labelColor = { default={ 1, 1, 1 }, over={ 0, 0, 0, 0.5 } },
+        onRelease =  function ()
+            ironSource.init(adLis, {androidAppKey="85460dcd", iOSAppKey= "8545d445", enableATT=true, testSuite= true})
+        end
+
+    })
+    sceneGroup:insert( init2 )
 end
 
 function scene:show( event )

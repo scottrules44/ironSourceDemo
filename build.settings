@@ -2,13 +2,19 @@ settings =
 {
 android =
     {
+      minSdkVersion = "19",
         applicationChildElements =
         {
             -- Array of strings
             [[
-            <meta-data
-            android:name="com.google.android.gms.ads.APPLICATION_ID"
-            android:value="insert app id for admob"/>
+            <activity
+            android:name="com.chartboost.sdk.CBImpressionActivity"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:excludeFromRecents="true"
+            android:hardwareAccelerated="true"/>
+                <meta-data android:name="com.google.android.gms.ads.APPLICATION_ID"
+                    android:value="ca-app-pub-3940256099942544~1458002511"/>  -- replace with your app id. See: https://goo.gl/fQ2neu
             <activity
                   android:name="com.mintegral.msdk.activity.MTGCommonActivity"
                   android:configChanges="keyboard|orientation"
@@ -24,29 +30,75 @@ android =
             ]],
         },
     },
-iphone =
+    iphone =
     {
-        plist =
-        {
-             SKAdNetworkItems = {{SKAdNetworkIdentifier = "SU67R6K2V3.skadnetwork"}},
+      xcassets="Images.xcassets",
+
+        plist = {
+            NSCalendarsUsageDescription = "test",
+            NSPhotoLibraryUsageDescription= "test",
+            NSCameraUsageDescription = "test",
+            NSMotionUsageDescription = "test",
+            LSApplicationQueriesSchemes = {"fb", "instagram", "tumblr", "twitter"},
+            UILaunchStoryboardName = "LaunchScreen",
+             NSUserTrackingUsageDescription= "insert reason for tracking here",
+             FacebookAppID = "261292011343921",
+             FacebookClientToken="1fcbfeba0c7781ae09ef3c0116e44ccc",
+            SKAdNetworkItems = {{SKAdNetworkIdentifier = "SU67R6K2V3.skadnetwork"}, {SKAdNetworkIdentifier = "4PFYVQ9L8R.skadnetwork"}, {SKAdNetworkIdentifier = "cstr6suwn9.skadnetwork"}, {SKAdNetworkIdentifier = "ludvb6z3bs.skadnetwork"}, {SKAdNetworkIdentifier = "F38H382JLK.skadnetwork"}, {SKAdNetworkIdentifier = "V4NXQHLYQP.skadnetwork"}, {SKAdNetworkIdentifier = "22mmun2rn5.skadnetwork"}, {SKAdNetworkIdentifier = "238da6jt44.skadnetwork"}, {SKAdNetworkIdentifier = "4DZT52R2T5.skadnetwork"}, {SKAdNetworkIdentifier = "GTA9LK7P23.skadnetwork"}},
             NSAppTransportSecurity =
                 {
                     NSAllowsArbitraryLoads = true,
                 },
-            GADApplicationIdentifier = "replace this",
-            NSUserTrackingUsageDescription= "insert reason for tracking here",
+            GADApplicationIdentifier = "ca-app-pub-3940256099942544~1458002511",
         },
     },
 plugins =
 {
+    ["plugin.facebook.v4a"] =
+    {
+    publisherId = "com.coronalabs"
+    },
+    ["plugin.advertisingId"] =
+    {
+        publisherId = "com.coronalabs"
+    },
+    ["plugin.ironSource.v2"] = {
+        publisherId = "tech.scotth",
+        marketplaceId = "Insert Marketplace ID Here",
+    },
+    ["ironsource.applovin"] = {
+        publisherId = "tech.scotth",
+    },
+    ["ironsource.adColony"] = {
+        publisherId = "tech.scotth",
+    },
+    ["ironsource.admob"] = {
+        publisherId = "tech.scotth",
+    },
+    ["ironsource.amazon"] = {
+        publisherId = "tech.scotth",
+    },
+    ["ironsource.facebook"] = {
+        publisherId = "tech.scotth",
+    },
+    ["ironsource.fyber"] = {
+        publisherId = "tech.scotth",
+    },
 
+    ["ironsource.hypermx"] = {
+        publisherId = "tech.scotth",
+    },
+    ["ironsource.myTarget"] = {
+        publisherId = "tech.scotth",
+    },
 
-        ["plugin.ironSource"] =
-        {
-            publisherId = "tech.scotth",
-            marketplaceId = "insert marketplace account ID"
-        },
+    ["ironsource.unityAds"] = {
+        publisherId = "tech.scotth",
+    },
 
-},
+    ["ironsource.vungle"] = {
+        publisherId = "tech.scotth",
+    },
+    },
 
 }
