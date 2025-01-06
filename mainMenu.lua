@@ -2,6 +2,7 @@ local ironSource = require "plugin.ironSource"
 
 --
 
+
 local json= require "json"
 local widget = require("widget")
 
@@ -43,13 +44,13 @@ function scene:create( event )
         print("-------------------")
 
         if (event.type == "banner") then
-            if (event.phase == "adLoaded") then
+            if (event.phase == "adReady") then
                  bannerHeight = ironSource.getSize()
                  topBanner.height = bannerHeight
                  topBanner.y= 0-scale0Y+(bannerHeight/2)
                  ironSource.show("banner", {position = "top"})
             elseif (event.phase == "adLoadedFailed" and event.error ~= "No ads to show") then
-
+                print("No Ads :((())")
             end
         end
 
@@ -77,7 +78,7 @@ function scene:create( event )
 
     timer.performWithDelay( 10000, function ()
         ironSource.load("banner", { iOSAdUnitId = "iep3rxsyp9na3rw8", androidAdUnitId = "thnfvcsog13bhn08"})
-    end, 1)
+    end, 0)
 
 
     local sceneGroup = self.view
@@ -121,7 +122,7 @@ function scene:create( event )
         isEnabled = true,
         labelColor = { default={ 1, 1, 1 }, over={ 0, 0, 0, 0.5 } },
         onRelease =  function ()
-            ironSource.load("rewardedVideo", {iOSAdUnitId = "qwouvdrkuwivay5q", androidAdUnitId = "76yy3nay3ceui2a3"})
+            ironSource.load("rewardedVideo", {iOSAdUnitId = "qwouvdrkuwivay5q", androidAdUnitId = "6qzplev7gav9w2of"})
         end
 
     })
@@ -192,6 +193,9 @@ function scene:create( event )
         id = "init2",
         labelColor = { default={ 1, 1, 1 }, over={ 0, 0, 0, 0.5 } },
         onRelease =  function ()
+            --ironSource.setMetaData("tapjoy_coppa", "true")
+            --ironSource.setMetaData("Tapjoy_optOutAdvertisingID", "false")
+
             ironSource.init(adLis, {androidAppKey="85460dcd", iOSAppKey= "8545d445", enableATT=true, testSuite= true})
         end
 
