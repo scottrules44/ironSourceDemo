@@ -53,6 +53,11 @@ function scene:create( event )
                 print("No Ads :((())")
             end
         end
+        if(event.type == "initLevelPlay" and event.status == "success") then
+            timer.performWithDelay( 6000, function ()
+                ironSource.load("banner", { iOSAdUnitId = "iep3rxsyp9na3rw8", androidAdUnitId = "thnfvcsog13bhn08"})
+            end, 1)
+        end
 
         if (event.type == "rewardedVideo") then
             if (event.phase == "adReady") then
@@ -76,9 +81,7 @@ function scene:create( event )
     end
     --Init within 10 seconds to test banners
 
-    timer.performWithDelay( 10000, function ()
-        ironSource.load("banner", { iOSAdUnitId = "iep3rxsyp9na3rw8", androidAdUnitId = "thnfvcsog13bhn08"})
-    end, 0)
+    
 
 
     local sceneGroup = self.view
